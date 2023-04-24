@@ -9,15 +9,38 @@ android {
     defaultConfig {
         applicationId "com.whiner.ocean"
         minSdk 19
-        targetSdk 33
+        targetSdk 30
         versionCode 1
         versionName "1.0"
 
     }
 
+    signingConfigs {
+        naizhe {
+            storeFile file('whiner.jks')
+            storePassword '88888888'
+            keyAlias 'key'
+            keyPassword '666666'
+        }
+        sys {
+            storeFile file('platform.keystore')
+            storePassword 'android'
+            keyAlias 'platform'
+            keyPassword 'android'
+        }
+    }
+
     buildTypes {
+        debug {
+            debuggable = true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
         release {
-            minifyEnabled false
+            debuggable = true
+            minifyEnabled true
+            signingConfig signingConfigs.naizhe
+            //signingConfig signingConfigs.sys
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -25,12 +48,18 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
 
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.8.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation project(path: ':kit')
+
+    //下载
+    implementation "com.liulishuo.okdownload:okdownload:1.0.7"
+    implementation "com.liulishuo.okdownload:sqlite:1.0.7"
+    implementation "com.liulishuo.okdownload:okhttp:1.0.7"
 
 }
